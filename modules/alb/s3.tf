@@ -6,7 +6,7 @@ data "aws_elb_service_account" "main" {
   count = local.create_logging_bucket ? 1 : 0
 }
 
-resource "aws_s3_bucket" "lb_logs" {
+resource "aws_s3_bucket" "lb_logs_igu" {
   count  = local.create_logging_bucket ? 1 : 0
   bucket = "${var.lb_name}-lb-logs"
 
@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "lb_logs" {
   }
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "lb_logs" {
+resource "aws_s3_bucket_server_side_encryption_configuration" "lb_logs_igu" {
   count  = local.create_logging_bucket ? 1 : 0
   bucket = aws_s3_bucket.lb_logs[0].id
 
@@ -26,7 +26,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "lb_logs" {
   }
 }
 
-resource "aws_s3_bucket_versioning" "lb_logs" {
+resource "aws_s3_bucket_versioning" "lb_logs_igu" {
   count  = local.create_logging_bucket ? 1 : 0
   bucket = aws_s3_bucket.lb_logs[0].id
   versioning_configuration {
@@ -37,7 +37,7 @@ resource "aws_s3_bucket_versioning" "lb_logs" {
   }
 }
 
-resource "aws_s3_bucket_policy" "lb_logs" {
+resource "aws_s3_bucket_policy" "lb_logs_igu" {
   count  = local.create_logging_bucket ? 1 : 0
   bucket = aws_s3_bucket.lb_logs[0].id
   policy = <<EOF
