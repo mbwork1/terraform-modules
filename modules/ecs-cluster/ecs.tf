@@ -40,9 +40,12 @@ resource "aws_launch_template" "cluster" {
   }
   
   vpc_security_group_ids     = [aws_security_group.cluster.id]
+  user_data = base64encode("#!/bin/bash\necho 'ECS_CLUSTER=cluster' > /etc/ecs/ecs.config\nstart ecs")
+/*
   user_data            = templatefile("${path.module}/templates/ecs_init.tpl", {
     cluster_name = var.cluster_name
   })
+*/
   lifecycle {
     create_before_destroy = true
   }
