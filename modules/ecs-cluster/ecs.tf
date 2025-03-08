@@ -39,8 +39,9 @@ resource "aws_launch_template" "cluster" {
     name = aws_iam_instance_profile.cluster-ec2-role.id
   }
   
-  security_groups      = [aws_security_group.cluster.id]
-  user_data            = templatefile("${path.module}/templates/ecs_init.tpl", {
+  vpc_security_group_ids     = [aws_security_group.cluster.id]
+  //user_data            = templatefile("${path.module}/templates/ecs_init.tpl", {
+  user_data = base64encode("#!/bin/bash\necho 'ECS_CLUSTER=example-cluster' > /etc/ecs/ecs.config\nstart ecs"), {
     cluster_name = var.cluster_name
   })
   lifecycle {
