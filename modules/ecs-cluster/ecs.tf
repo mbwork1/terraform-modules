@@ -29,12 +29,16 @@ resource "aws_ecs_cluster" "cluster" {
 #
 # launchconfig
 #
-resource "aws_launch_configuration" "cluster" {
+resource "aws_launch_template" "cluster" {
   name_prefix          = "ecs-${var.cluster_name}-launchconfig"
   image_id             = data.aws_ami.ecs.id
   instance_type        = var.instance_type
   key_name             = var.ssh_key_name
-  iam_instance_profile = aws_iam_instance_profile.cluster-ec2-role.id
+  
+  iam_instance_profile {
+    name = aws_iam_instance_profile.cluster-ec2-role.id
+  }
+  
   security_groups      = [aws_security_group.cluster.id]
   user_data            = templatefile("${path.module}/templates/ecs_init.tpl", {
     cluster_name = var.cluster_name
@@ -59,6 +63,11 @@ resource "aws_autoscaling_group" "cluster" {
   min_size             = var.ecs_minsize
   max_size             = var.ecs_maxsize
   desired_capacity     = var.ecs_desired_capacity
+
+  launch_template {
+    id = aws_launch_template.cluster.id
+    version = "$Latest"
+  }
 
   tag {
     key                 = "Name"
