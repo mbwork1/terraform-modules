@@ -17,7 +17,7 @@ resource "aws_s3_bucket" "lb_logs_igu" {
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "lb_logs_igu" {
   count  = local.create_logging_bucket ? 1 : 0
-  bucket = aws_s3_bucket.lb_logs[0].id
+  bucket = aws_s3_bucket.lb_logs_igu[0].id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -28,7 +28,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "lb_logs_igu" {
 
 resource "aws_s3_bucket_versioning" "lb_logs_igu" {
   count  = local.create_logging_bucket ? 1 : 0
-  bucket = aws_s3_bucket.lb_logs[0].id
+  bucket = aws_s3_bucket.lb_logs_igu[0].id
   versioning_configuration {
     status = "Disabled"
   }
@@ -39,7 +39,7 @@ resource "aws_s3_bucket_versioning" "lb_logs_igu" {
 
 resource "aws_s3_bucket_policy" "lb_logs_igu" {
   count  = local.create_logging_bucket ? 1 : 0
-  bucket = aws_s3_bucket.lb_logs[0].id
+  bucket = aws_s3_bucket.lb_logs_igu[0].id
   policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -79,7 +79,7 @@ EOF
 
 resource "aws_s3_bucket_public_access_block" "lb-logs" {
   count  = local.create_logging_bucket ? 1 : 0
-  bucket = aws_s3_bucket.lb_logs[0].id
+  bucket = aws_s3_bucket.lb_logs_igu[0].id
 
   block_public_acls       = true
   block_public_policy     = true
