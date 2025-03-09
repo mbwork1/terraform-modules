@@ -79,7 +79,7 @@ EOF
 
 resource "aws_s3_bucket_public_access_block" "lb-logs" {
   count  = local.create_logging_bucket ? 1 : 0
-  bucket = aws_s3_bucket.lb_logs_igu_togab[0].id
+  bucket = aws_s3_bucket.lb_logs_togab[0].id
 
   block_public_acls       = true
   block_public_policy     = true
