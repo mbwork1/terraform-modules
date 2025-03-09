@@ -68,7 +68,7 @@ variable "drop_invalid_header_fields" {
 
 variable "enable_deletion_protection" {
   description = "Enable Deletion Protection"
-  default     = true
+  default     = false
 }
 
 variable "desync_mitigation_mode"  {
